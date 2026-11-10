@@ -3,6 +3,8 @@ using LMS___Mini_Version.features.InternFeature.Commands;
 using LMS___Mini_Version.features.InternFeature.DTOs;
 using LMS___Mini_Version.features.InternFeature.Queries;
 using LMS___Mini_Version.features.InternFeature.ViewModels;
+using LMS___Mini_Version.features.Orchestrators.ApproveCreateInternOrchestrator.Commands;
+using LMS___Mini_Version.features.Orchestrators.ApproveCreateInternOrchestrator.ViewModels;
 using LMS___Mini_Version.features.shared;
 using LMS___Mini_Version.features.TrackFeature.GetAllTracks.ViewModels;
 using MediatR;
@@ -27,6 +29,18 @@ namespace LMS___Mini_Version.Controllers
 
             return StatusCode(result.StatusCode,
                 EndpointResponse<IEnumerable<InternDTO>>.OK(result.Data!, result.StatusCode, "Success"));
+        }
+
+
+        [HttpPost("{internId:int}/approve-and-register")]
+        public async Task<ActionResult<EndpointResponse<int>>> ApproveAndRegister( int internId, [FromBody] ApproveAndRegisterViewModel vm,CancellationToken ct)
+        {
+            var result = await mediator.Send( new ApproveCreateInternOrchestratorCommand(internId, vm.PaymentMethod), ct);
+
+            if (!result.Success)
+             return StatusCode(result.StatusCode, EndpointResponse.Fail(result.StatusCode, "Failed to approve and register intern", result.Errors));
+
+            return StatusCode(result.StatusCode, EndpointResponse<int>.OK(result.Data, result.StatusCode, "Intern approved and registered successfully"));
         }
 
 
@@ -56,10 +70,17 @@ namespace LMS___Mini_Version.Controllers
 
         //}
 
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult> Delete()
-        //{
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<EndpointResponse>> Delete(int id, CancellationToken ct)
+        {
+            var result = await mediator.Send(new DeleteInternCommand(id), ct);
 
-        //}
+            if (!result.Success)
+                return StatusCode(result.StatusCode,
+                    EndpointResponse.Fail(result.StatusCode, "Failed to delete Intern", result.Errors));
+
+            return StatusCode(result.StatusCode,
+                EndpointResponse.OK(result.StatusCode, "Intern deleted successfully"));
+        }
     }
 }

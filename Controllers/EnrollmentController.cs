@@ -44,5 +44,25 @@ namespace LMS___Mini_Version.Controllers
             return StatusCode(result.StatusCode,
                 EndpointResponse.OK(result.StatusCode, "Enrollment completed successfully"));
         }
+
+        [HttpGet("track/{trackId:int}")]
+        public async Task<ActionResult<EndpointResponse<IEnumerable<TrackEnrollmentViewModel>>>> GetByTrackId(int trackId, CancellationToken ct)
+        {
+            var result = await mediator.Send(new GetEnrollmentsByTrackIdQuery(trackId), ct);
+            if (!result.Success)
+                return StatusCode(result.StatusCode,
+                    EndpointResponse.Fail(result.StatusCode, "Failed to get track enrollments", result.Errors));
+
+            var enrollmentsVM = result.Data!.Select(x => new TrackEnrollmentViewModel(
+                x.EnrollmentId,
+                x.InternFullName,
+                x.EnrollmentDate,
+                x.EnrollmentStatus,
+                x.PaymentAmount,
+                x.PaymentStatus));
+
+            return StatusCode(result.StatusCode,
+                EndpointResponse<IEnumerable<TrackEnrollmentViewModel>>.OK(enrollmentsVM, result.StatusCode, "Success"));
+        }
     }
 }
