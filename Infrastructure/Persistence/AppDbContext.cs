@@ -55,6 +55,14 @@ namespace LMS___Mini_Version.Persistence
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Intern>(e =>
+            {
+                e.Property(i => i.FullName).IsRequired().HasMaxLength(150);
+                e.Property(i => i.Email).IsRequired().HasMaxLength(200);
+                e.HasIndex(i => i.Email).IsUnique();               
+                e.Property(i => i.Status).HasConversion<string>().HasMaxLength(20); 
+            });
         }
     }
 }

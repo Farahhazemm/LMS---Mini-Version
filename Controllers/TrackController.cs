@@ -50,8 +50,7 @@ namespace LMS___Mini_Version.Controllers
         //}
 
         [HttpPost]
-        public async Task<ActionResult<EndpointResponse>> Create(
-    [FromBody] AddTrackCommand command)
+        public async Task<ActionResult<EndpointResponse>> Create( [FromBody] AddTrackCommand command)
         {
             var result = await _mediator.Send(command);
 

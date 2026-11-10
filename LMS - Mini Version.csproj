@@ -4,7 +4,7 @@
 		    <TargetFramework>net8.0</TargetFramework>
 		    <Nullable>enable</Nullable>
 		    <ImplicitUsings>enable</ImplicitUsings>
-		    <RootNamespace>LMS___Mini_Version</RootNamespace>
+		    <RootNamespace>LMS___Mini_Version</RootNamespace><UserSecretsId>9011c202-7f4f-4d84-a340-e8f8e20f6f8b</UserSecretsId>
 		 
 	</PropertyGroup>
 
@@ -28,7 +28,7 @@
 
 	  <ItemGroup>
 		    
-		    <Folder Include="Domain\Enums\" /><Folder Include="features\TrackFeature\AddTrack\Dtos\" /><Folder Include="features\TrackFeature\AddTrack\ViewModels\" />
+		    <Folder Include="features\TrackFeature\AddTrack\Dtos\" /><Folder Include="features\TrackFeature\AddTrack\ViewModels\" />
 		 
 	</ItemGroup>
 </Project>
